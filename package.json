@@ -1,0 +1,8 @@
+{
+  "name": "office-tv-display",
+  "version": "1.0.0",
+  "description": "Skyrise Education Office TV Display",
+  "dependencies": {
+    "@upstash/redis": "^1.28.0"
+  }
+}
