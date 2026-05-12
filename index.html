@@ -530,7 +530,7 @@
           </div>
           <div class="metric-text">
             <div class="metric-label">Team Alpha Sales</div>
-            <div class="metric-value">0</div>
+            <div class="metric-value" id="alpha-num">0</div>
             <div class="metric-delta"></div>
           </div>
         </div>
@@ -544,7 +544,7 @@
           </div>
           <div class="metric-text">
             <div class="metric-label">Team Rebel Sales</div>
-            <div class="metric-value">0</div>
+            <div class="metric-value" id="rebel-num">0</div>
             <div class="metric-delta"></div>
           </div>
         </div>
@@ -558,7 +558,7 @@
           </div>
           <div class="metric-text">
             <div class="metric-label">Branch Total Sales</div>
-            <div class="metric-value">0</div>
+            <div class="metric-value" id="branch-total">0</div>
             <div class="metric-delta"></div>
           </div>
         </div>
@@ -593,38 +593,15 @@
 </div>
 
 <script>
-  /* ── Sales Data ─────────────────────────── */
-  let salesData = {
-    alpha: { achieved: 0, target: 10, name: 'Team Alpha' },
-    rebel: { achieved: 0, target: 10, name: 'Team Rebel' },
-    total: { achieved: 0, target: 20, name: 'Branch Total' }
-  };
-
-  async function fetchMetrics() {
-    try {
-      const response = await fetch('/api/metrics');
-      const data = await response.json();
-      salesData = data;
-      updateMetric('alpha');
-      updateMetric('rebel');
-      updateMetric('total');
-    } catch (error) {
-      console.error('Error fetching metrics:', error);
-    }
-  }
-
   function calculateProgress(achieved, target) {
     if (target === 0) return 0;
     return ((achieved / target) * 100).toFixed(1);
   }
 
-  function updateMetric(id) {
-    const data = salesData[id];
-    const progress = calculateProgress(data.achieved, data.target);
-    const metricEl = document.querySelector(`[data-metric="${id}"]`);
-    const valueEl = metricEl.querySelector('.metric-value');
-    const deltaEl = metricEl.querySelector('.metric-delta');
-    
+  function updateMetricById(id, data) {
+    const valueEl = document.getElementById(id);
+    if (!valueEl) return;
+
     valueEl.textContent = `${data.achieved}/${data.target}`;
     
     // Adjust font size based on text length
@@ -642,6 +619,12 @@
     } else {
       valueEl.style.fontSize = 'clamp(19px, 2.3vw, 38px)';
     }
+
+    const metricEl = valueEl.closest('[data-metric]');
+    if (!metricEl) return;
+
+    const deltaEl = metricEl.querySelector('.metric-delta');
+    const progress = calculateProgress(data.achieved, data.target);
     
     let iconClass = 'fa-check';
     let deltaClass = 'neutral';
@@ -670,6 +653,20 @@
     }, 200);
   }
 
+  async function fetchMetrics() {
+    try {
+      const response = await fetch('/api/metrics');
+      const data = await response.json();
+      
+      // Update using IDs
+      updateMetricById('alpha-num', data.alpha);
+      updateMetricById('rebel-num', data.rebel);
+      updateMetricById('branch-total', data.total);
+    } catch (error) {
+      console.error('Error fetching metrics:', error);
+    }
+  }
+
   /* ── Clock ─────────────────────────── */
   function tick() {
     const now = new Date();
@@ -683,8 +680,8 @@
   /* Initialize sales metrics */
   document.addEventListener('DOMContentLoaded', function() {
     fetchMetrics();
-    // Poll for updates every second
-    setInterval(fetchMetrics, 1000);
+    // Poll for updates every 5 seconds
+    setInterval(fetchMetrics, 5000);
   });
 </script>
 

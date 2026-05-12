@@ -2,42 +2,50 @@ import { Redis } from '@upstash/redis';
 
 const redis = Redis.fromEnv();
 
-const DEFAULT_DATA = {
-  alpha: { achieved: 0, target: 10, name: 'Team Alpha' },
-  rebel: { achieved: 0, target: 10, name: 'Team Rebel' },
-  total: { achieved: 0, target: 20, name: 'Branch Total' }
-};
-
-async function getSalesData() {
-  let data = await redis.get('sales-data');
-  if (!data) {
-    await redis.set('sales-data', JSON.stringify(DEFAULT_DATA));
-    return DEFAULT_DATA;
-  }
-  return JSON.parse(data);
-}
-
-async function updateSalesData(newData) {
-  let data = await getSalesData();
-  data.alpha = newData.alpha || data.alpha;
-  data.rebel = newData.rebel || data.rebel;
-  data.total = newData.total || {
-    achieved: data.alpha.achieved + data.rebel.achieved,
-    target: data.alpha.target + data.rebel.target,
-    name: 'Branch Total'
-  };
-  await redis.set('sales-data', JSON.stringify(data));
-  return data;
-}
-
 export default async function handler(req, res) {
   try {
     if (req.method === 'GET') {
-      const data = await getSalesData();
-      return res.status(200).json(data);
+      const alphaAchieved = await redis.get('alpha_achieved') || 0;
+      const alphaTarget = await redis.get('alpha_target') || 10;
+      const rebelAchieved = await redis.get('rebel_achieved') || 0;
+      const rebelTarget = await redis.get('rebel_target') || 10;
+
+      return res.status(200).json({
+        alpha: { achieved: Number(alphaAchieved), target: Number(alphaTarget), name: 'Team Alpha' },
+        rebel: { achieved: Number(rebelAchieved), target: Number(rebelTarget), name: 'Team Rebel' },
+        total: { 
+          achieved: Number(alphaAchieved) + Number(rebelAchieved), 
+          target: Number(alphaTarget) + Number(rebelTarget), 
+          name: 'Branch Total' 
+        }
+      });
     } else if (req.method === 'POST') {
-      const data = await updateSalesData(req.body);
-      return res.status(200).json(data);
+      const newData = req.body;
+      
+      if (newData.alpha) {
+        if (newData.alpha.achieved !== undefined) await redis.set('alpha_achieved', newData.alpha.achieved);
+        if (newData.alpha.target !== undefined) await redis.set('alpha_target', newData.alpha.target);
+      }
+      
+      if (newData.rebel) {
+        if (newData.rebel.achieved !== undefined) await redis.set('rebel_achieved', newData.rebel.achieved);
+        if (newData.rebel.target !== undefined) await redis.set('rebel_target', newData.rebel.target);
+      }
+
+      const alphaAchieved = await redis.get('alpha_achieved') || 0;
+      const alphaTarget = await redis.get('alpha_target') || 10;
+      const rebelAchieved = await redis.get('rebel_achieved') || 0;
+      const rebelTarget = await redis.get('rebel_target') || 10;
+
+      return res.status(200).json({
+        alpha: { achieved: Number(alphaAchieved), target: Number(alphaTarget), name: 'Team Alpha' },
+        rebel: { achieved: Number(rebelAchieved), target: Number(rebelTarget), name: 'Team Rebel' },
+        total: { 
+          achieved: Number(alphaAchieved) + Number(rebelAchieved), 
+          target: Number(alphaTarget) + Number(rebelTarget), 
+          name: 'Branch Total' 
+        }
+      });
     } else {
       return res.status(405).json({ error: 'Method not allowed' });
     }
