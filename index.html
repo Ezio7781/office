@@ -192,6 +192,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
+    width: 100%;
+    display: block;
   }
   .metric-delta {
     font-size: clamp(10px, 0.8vw, 13px);
@@ -615,7 +617,11 @@
     
     // Adjust font size based on text length
     const textLength = valueEl.textContent.length;
-    if (textLength > 8) {
+    if (textLength > 12) {
+      valueEl.style.fontSize = 'clamp(12px, 1.5vw, 24px)';
+    } else if (textLength > 10) {
+      valueEl.style.fontSize = 'clamp(14px, 1.8vw, 28px)';
+    } else if (textLength > 8) {
       valueEl.style.fontSize = 'clamp(16px, 2vw, 32px)';
     } else if (textLength > 6) {
       valueEl.style.fontSize = 'clamp(18px, 2.2vw, 36px)';
