@@ -262,30 +262,88 @@
     color: var(--accent);
     margin-bottom: clamp(8px, 1.2vh, 16px);
     opacity: 0.8;
+    animation: fadeInUp 1s ease-out;
   }
+  
   .slide-title {
-    font-size: clamp(28px, 4.5vw, 72px);
-    font-weight: 300;
+    font-size: clamp(36px, 5vw, 80px);
+    font-weight: 600;
     letter-spacing: -0.03em;
     text-align: center;
-    color: var(--text);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--red) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     line-height: 1.1;
-    margin-bottom: clamp(8px, 1.2vh, 18px);
+    margin-bottom: clamp(12px, 1.8vh, 24px);
+    animation: fadeInUp 1.2s ease-out;
   }
+  
   .slide-sub {
-    font-size: clamp(12px, 1.2vw, 18px);
+    font-size: clamp(14px, 1.4vw, 20px);
     color: var(--muted);
     text-align: center;
-    max-width: 600px;
-    line-height: 1.6;
+    max-width: 700px;
+    line-height: 1.7;
+    animation: fadeInUp 1.4s ease-out;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   /* Company slide */
-  .s-company { background: radial-gradient(ellipse at 60% 40%, #e6ecff 0%, var(--bg) 70%); }
+  .s-company { 
+    background: linear-gradient(135deg, #ffffff 0%, #e6ecff 33%, #ffe6e6 66%, #ffffff 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .s-company::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -10%;
+    width: 50%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(0,0,102,0.08) 0%, transparent 70%);
+    animation: float 8s ease-in-out infinite;
+  }
+  
+  .s-company::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    right: -10%;
+    width: 50%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(255,0,0,0.08) 0%, transparent 70%);
+    animation: float 10s ease-in-out infinite reverse;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -20px); }
+  }
+  
   .big-logo {
     height: clamp(120px, 20vw, 280px);
     width: auto;
     margin-bottom: clamp(12px, 2vh, 28px);
+    filter: drop-shadow(0 10px 30px rgba(0,0,102,0.15));
+    animation: logoPulse 3s ease-in-out infinite;
+  }
+  
+  @keyframes logoPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
   }
 
   /* Team slide */
@@ -519,7 +577,7 @@
     <div class="slide s-company active">
       <div class="slide-title">Welcome to</div>  
       <img src="logo.png" alt="Skyrise Education" class="big-logo">
-      <div class="slide-tag">Company</div>
+      <div class="slide-tag"></div>
       <div class="slide-sub">Empowering students. Delivering quality education every single day.</div> <!-- ← EDIT -->
     </div>
 
