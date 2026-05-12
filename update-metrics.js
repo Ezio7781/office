@@ -1,8 +1,8 @@
 const http = require('http');
 
 const data = {
-  alpha: { achieved: 5.5, target: 10, name: 'Team Alpha' },
-  rebel: { achieved: 7.2, target: 10, name: 'Team Rebel' }
+  alpha: { achieved: 8.5, target: 10, name: 'Team Alpha' },
+  rebel: { achieved: 9.2, target: 10, name: 'Team Rebel' }
 };
 
 const postData = JSON.stringify(data);
