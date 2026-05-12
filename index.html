@@ -122,6 +122,7 @@
     min-width: 0;
     flex: 1;
     max-width: 400px;
+    width: 100%;
     position: relative;
     overflow: visible;
     box-shadow: 0 4px 20px rgba(0,0,102,0.08);
@@ -130,16 +131,6 @@
   .metric:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(0,0,102,0.12);
-  }
-  .metric::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--accent), var(--red));
-    opacity: 0.8;
   }
   .metric-content {
     display: flex;
@@ -220,7 +211,7 @@
     letter-spacing: -0.02em;
   }
   .clock-date {
-    font-size: clamp(8px, 0.7vw, 11px);
+    font-size: clamp(10px, 0.9vw, 14px);
     color: var(--muted);
     margin-top: 2px;
     text-align: right;
