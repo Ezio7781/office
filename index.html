@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Office TV Display</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #000066;
+    --accent-dim: rgba(0,0,102,0.1);
+    --accent-border: rgba(0,0,102,0.2);
+    --bg: #ffffff;
+    --bg2: #ffffff;
+    --bg3: #ffffff;
+    --text: #000066;
+    --muted: rgba(0,0,102,0.6);
+    --border: rgba(0,0,102,0.15);
+    --font: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+    --red: #ff0000;
+    --slide-duration: 3s; /* ← CHANGE SLIDE SPEED HERE (seconds) */
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #ffffff !important;
+    font-family: var(--font);
+    color: var(--text);
+  }
+
+  /* ─── LAYOUT ─────────────────────────────────── */
+  .screen {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* ─── TOP BAR ─────────────────────────────────── */
+  .top-bar {
+    flex-shrink: 0;
+    height: 22vh;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 3vw;
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 1.5vw;
+    flex-shrink: 0;
+    gap: 1vw;
+  }
+  .brand-logo {
+    height: clamp(60px, 8vh, 100px);
+    width: auto;
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+  .brand-name {
+    font-size: clamp(14px, 1.6vw, 24px);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .brand-tagline {
+    font-size: clamp(9px, 0.8vw, 13px);
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .live-dot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .live-dot span {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .live-dot p { font-size: 10px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+
+  .bar-divider {
+    width: 1px;
+    height: 60%;
+    background: var(--border);
+    margin: 0 1.5vw;
+    flex-shrink: 0;
+  }
+
+  .metrics-row {
+    display: flex;
+    gap: 1.5vw;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .metric {
+    background: linear-gradient(145deg, #ffffff, #f0f5ff);
+    border: 1px solid var(--accent-border);
+    border-radius: 16px;
+    padding: clamp(16px, 2vh, 24px) clamp(20px, 2vw, 32px);
+    min-width: 0;
+    flex: 1;
+    max-width: 320px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,102,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .metric:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,102,0.12);
+  }
+  .metric::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--red));
+    opacity: 0.8;
+  }
+  .metric-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .metric-icon {
+    width: clamp(48px, 5vw, 64px);
+    height: clamp(48px, 5vw, 64px);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(20px, 2.5vw, 28px);
+    flex-shrink: 0;
+  }
+  .metric-icon.blue {
+    background: linear-gradient(135deg, rgba(0,0,102,0.15), rgba(0,0,102,0.05));
+    color: var(--accent);
+  }
+  .metric-icon.red {
+    background: linear-gradient(135deg, rgba(255,0,0,0.15), rgba(255,0,0,0.05));
+    color: var(--red);
+  }
+  .metric-icon.purple {
+    background: linear-gradient(135deg, rgba(75,0,130,0.15), rgba(75,0,130,0.05));
+    color: #4B0082;
+  }
+  .metric-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .metric-label {
+    font-size: clamp(10px, 0.85vw, 14px);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .metric-value {
+    font-family: var(--mono);
+    font-size: clamp(20px, 2.5vw, 40px);
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    transition: transform 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .metric-delta {
+    font-size: clamp(10px, 0.8vw, 13px);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+  }
+  .metric-delta.up { color: var(--accent); }
+  .metric-delta.down { color: var(--red); }
+  .metric-delta.neutral { color: var(--muted); }
+
+  .clock-block {
+    margin-left: auto;
+    text-align: right;
+    flex-shrink: 0;
+    padding-left: 1.5vw;
+  }
+  .clock-time {
+    font-family: var(--mono);
+    font-size: clamp(20px, 2.4vw, 38px);
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .clock-date {
+    font-size: clamp(9px, 0.75vw, 13px);
+    color: var(--muted);
+    margin-top: 2px;
+    text-align: right;
+  }
+
+  /* ─── SLIDES AREA ─────────────────────────────── */
+  .slides-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4vh 5vw;
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    pointer-events: none;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  .slide.exit {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .slide-tag {
+    font-size: clamp(9px, 0.8vw, 12px);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: clamp(8px, 1.2vh, 16px);
+    opacity: 0.8;
+  }
+  .slide-title {
+    font-size: clamp(28px, 4.5vw, 72px);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    text-align: center;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: clamp(8px, 1.2vh, 18px);
+  }
+  .slide-sub {
+    font-size: clamp(12px, 1.2vw, 18px);
+    color: var(--muted);
+    text-align: center;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  /* Company slide */
+  .s-company { background: radial-gradient(ellipse at 60% 40%, #e6ecff 0%, var(--bg) 70%); }
+  .big-logo {
+    height: clamp(120px, 20vw, 280px);
+    width: auto;
+    margin-bottom: clamp(12px, 2vh, 28px);
+  }
+
+  /* Team slide */
+  .s-team { background: radial-gradient(ellipse at 30% 60%, #ffe6e6 0%, var(--bg) 70%); }
+  .team-grid {
+    display: flex;
+    gap: clamp(16px, 2vw, 32px);
+    margin-top: clamp(12px, 2vh, 24px);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .team-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: clamp(12px, 1.5vh, 20px) clamp(16px, 1.8vw, 28px);
+    text-align: center;
+    min-width: clamp(100px, 10vw, 150px);
+  }
+  .avatar {
+    width: clamp(40px, 4.5vw, 64px);
+    height: clamp(40px, 4.5vw, 64px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(12px, 1.3vw, 18px);
+    font-weight: 500;
+    margin: 0 auto clamp(6px, 0.8vh, 12px);
+  }
+  .team-name {
+    font-size: clamp(11px, 1vw, 15px);
+    font-weight: 500;
+    color: var(--text);
+  }
+  .team-role {
+    font-size: clamp(9px, 0.75vw, 12px);
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .team-badge {
+    font-size: clamp(8px, 0.7vw, 11px);
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+    border-radius: 20px;
+    padding: 2px 10px;
+    margin-top: 8px;
+    display: inline-block;
+  }
+
+  /* Events slide */
+  .s-events { background: radial-gradient(ellipse at 70% 30%, #f0f5ff 0%, var(--bg) 70%); }
+  .events-list {
+    margin-top: clamp(12px, 2vh, 24px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(6px, 1vh, 14px);
+    width: min(520px, 80vw);
+  }
+  .event-row {
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 1.5vw, 20px);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: clamp(8px, 1vh, 14px) clamp(12px, 1.4vw, 20px);
+  }
+  .event-date-box {
+    font-family: var(--mono);
+    font-size: clamp(9px, 0.75vw, 12px);
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    border-radius: 6px;
+    padding: 3px 10px;
+    flex-shrink: 0;
+  }
+  .event-name {
+    font-size: clamp(11px, 1vw, 16px);
+    color: var(--text);
+  }
+
+  /* Announcement slide */
+  .s-announce { background: radial-gradient(ellipse at 50% 50%, #ffeef0 0%, var(--bg) 70%); }
+  .announce-chip {
+    font-size: clamp(8px, 0.75vw, 11px);
+    background: rgba(251,113,133,0.15);
+    color: var(--red);
+    border: 1px solid rgba(251,113,133,0.3);
+    border-radius: 20px;
+    padding: 3px 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: clamp(8px, 1.2vh, 16px);
+  }
+
+  /* KPI / metrics slide */
+  .s-kpi { background: radial-gradient(ellipse at 40% 60%, #e8f0ff 0%, var(--bg) 70%); }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(10px, 1.2vw, 20px);
+    margin-top: clamp(12px, 2vh, 24px);
+    width: min(600px, 85vw);
+  }
+  .kpi-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: clamp(10px, 1.3vh, 18px) clamp(14px, 1.6vw, 24px);
+  }
+  .kpi-label { font-size: clamp(9px, 0.75vw, 12px); color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .kpi-value { font-family: var(--mono); font-size: clamp(22px, 2.8vw, 44px); font-weight: 500; letter-spacing: -0.02em; }
+  .kpi-value.good { color: var(--accent); }
+  .kpi-value.neutral { color: var(--text); }
+  .kpi-sub { font-size: clamp(9px, 0.75vw, 12px); color: var(--muted); margin-top: 4px; }
+
+  /* ─── PROGRESS BAR ─────────────────────────────── */
+  .progress-bar {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    background: var(--accent);
+    opacity: 0.5;
+    animation: progress var(--slide-duration) linear infinite;
+    transform-origin: left;
+  }
+  @keyframes progress { from{width:0} to{width:100%} }
+
+  /* ─── SLIDE DOTS ───────────────────────────────── */
+  .slide-dots {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 10;
+  }
+  .dot-i {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+  }
+  .dot-i.on {
+    background: var(--accent);
+    width: 18px;
+    border-radius: 3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="screen">
+
+  <!-- ══ TOP BAR — EDIT YOUR NUMBERS BELOW ══════════════════════════ -->
+  <div class="top-bar">
+
+    <div class="brand">
+      <img src="logo.png" alt="Skyrise Education" class="brand-logo">
+      <div class="brand-text">
+        <div class="live-dot"><span></span><p>Live</p></div>
+      </div>
+    </div>
+
+    <div class="bar-divider"></div>
+
+    <div class="metrics-row">
+
+      <!-- METRIC 1: Team Alpha -->
+      <div class="metric" data-metric="alpha">
+        <div class="metric-content">
+          <div class="metric-icon blue">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="metric-text">
+            <div class="metric-label">Team Alpha Sales</div>
+            <div class="metric-value">0</div>
+            <div class="metric-delta"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- METRIC 2: Team Rebel -->
+      <div class="metric" data-metric="rebel">
+        <div class="metric-content">
+          <div class="metric-icon red">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <div class="metric-text">
+            <div class="metric-label">Team Rebel Sales</div>
+            <div class="metric-value">0</div>
+            <div class="metric-delta"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- METRIC 3: Branch Total -->
+      <div class="metric" data-metric="total">
+        <div class="metric-content">
+          <div class="metric-icon purple">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="metric-text">
+            <div class="metric-label">Branch Total Sales</div>
+            <div class="metric-value">0</div>
+            <div class="metric-delta"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bar-divider"></div>
+
+    <div class="clock-block">
+      <div class="clock-time" id="clock">--:--</div>
+      <div class="clock-date" id="date">--</div>
+    </div>
+  </div>
+  <!-- ══ END TOP BAR ═══════════════════════════════════════════════ -->
+
+
+  <!-- ══ ROTATING SLIDES — EDIT CONTENT BELOW ══════════════════════ -->
+  <div class="slides-area">
+
+    <!-- SLIDE 1: Company / Branding -->
+    <div class="slide s-company active">
+      <div class="slide-title">Welcome to</div>  
+      <img src="logo.png" alt="Skyrise Education" class="big-logo">
+      <div class="slide-tag">Company</div>
+      <div class="slide-sub">Empowering students. Delivering quality education every single day.</div> <!-- ← EDIT -->
+    </div>
+
+    <!--
+    <! SLIDE 2: Team Highlights
+    <div class="slide s-team">
+      <div class="slide-tag">Team highlights</div>
+      <div class="slide-title">Star performers — May</div>  
+      <div class="team-grid">
+
+        <!-- PERSON 1 — copy this block to add more people -->
+        <div class="team-card">
+          <div class="avatar" style="background: rgba(0,0,102,0.15); color: #000066; border: 1px solid rgba(0,0,102,0.3);">RK</div> <!-- ← INITIALS -->
+          <div class="team-name">Sagar</div>      
+          <div class="team-role">Sales Executive</div>  
+          <div class="team-badge">Top closer</div>      
+        </div>
+
+        <!-- PERSON 2 -->
+        <div class="team-card">
+          <div class="avatar" style="background: rgba(255,0,0,0.15); color: #ff0000; border: 1px solid rgba(255,0,0,0.3);">PS</div>
+          <div class="team-name">Laboni</div>
+          <div class="team-role">Sales </div>
+          <div class="team-badge" style="background: rgba(255,0,0,0.15); color: #ff0000; border: 1px solid rgba(255,0,0,0.3);">₹12L this month</div>
+        </div>
+
+        <!-- PERSON 3 -->
+        <div class="team-card">
+          <div class="avatar" style="background: rgba(0,0,102,0.15); color: #000066; border: 1px solid rgba(0,0,102,0.3);">AM</div>
+          <div class="team-name"> Akash R </div>
+          <div class="team-role">BDR</div>
+          <div class="team-badge">8 demos booked</div>
+        </div>
+
+      </div>
+    </div>
+
+    <! SLIDE 3: Events / Calendar
+    <div class="slide s-events">
+      <div class="slide-tag">Upcoming events</div>
+      <div class="slide-title">What's on the calendar</div>
+      <div class="events-list">
+
+        <!-- EVENT — copy this block to add more -->
+        <div class="event-row">
+          <div class="event-date-box">May 14</div>    <!-- ← DATE -->
+          <div class="event-name">All-hands meeting — 10:00 AM</div> <!-- ← EVENT -->
+        </div>
+        <div class="event-row">
+          <div class="event-date-box">May 16</div>
+          <div class="event-name">Client demo — Infosys</div>
+        </div>
+        <div class="event-row">
+          <div class="event-date-box">May 20</div>
+          <div class="event-name">Q2 review kickoff</div>
+        </div>
+        <div class="event-row">
+          <div class="event-date-box">May 23</div>
+          <div class="event-name">Team outing — venue TBD</div>
+        </div>
+
+      </div>
+    </div>
+
+    <! SLIDE 4: KPI Dashboard
+    <div class="slide s-kpi">
+      <div class="slide-tag">Key metrics</div>
+      <div class="slide-title">Performance at a glance</div>
+      <div class="kpi-grid">
+
+        <div class="kpi-card">
+          <div class="kpi-label">Q2 revenue</div>
+          <div class="kpi-value good">₹2.4Cr</div>    <!-- ← EDIT -->
+          <div class="kpi-sub">Target: ₹3Cr · 80% done</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">New customers</div>
+          <div class="kpi-value good">47</div>         <!-- ← EDIT -->
+          <div class="kpi-sub">+18 vs last quarter</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Avg deal size</div>
+          <div class="kpi-value neutral">₹51K</div>    <!-- ← EDIT -->
+          <div class="kpi-sub">Stable vs last quarter</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">NPS score</div>
+          <div class="kpi-value good">72</div>         <!-- ← EDIT -->
+          <div class="kpi-sub">Excellent · +4 pts</div>
+        </div>
+
+      </div>
+    </div>
+
+    <! SLIDE 5: Announcement
+    <div class="slide s-announce">
+      <div class="announce-chip">Announcement</div>
+      <div class="slide-tag">Company news</div>
+      <div class="slide-title">We have a New Space </div>  
+      <div class="slide-sub">An incredible milestone. Thank you to every single person on this team for making it happen.</div> 
+    </div>
+
+    <! ── ADD MORE SLIDES HERE — copy any .slide block above ─────
+    -->
+
+    <!-- <div class="progress-bar" id="progress"></div>
+
+    <div class="slide-dots" id="dots"></div> -->
+
+  </div>
+  <!-- ══ END SLIDES ══════════════════════════════════════════════ -->
+
+</div>
+
+<script>
+  /* ── Sales Data ─────────────────────────── */
+  const salesData = {
+    alpha: { achieved: 0, target: 10, name: 'Team Alpha' },
+    rebel: { achieved: 0, target: 10, name: 'Team Rebel' },
+    total: { achieved: 0, target: 20, name: 'Branch Total' }
+  };
+
+  function calculateProgress(achieved, target) {
+    if (target === 0) return 0;
+    return ((achieved / target) * 100).toFixed(1);
+  }
+
+  function updateMetric(id) {
+    const data = salesData[id];
+    const progress = calculateProgress(data.achieved, data.target);
+    const metricEl = document.querySelector(`[data-metric="${id}"]`);
+    const valueEl = metricEl.querySelector('.metric-value');
+    const deltaEl = metricEl.querySelector('.metric-delta');
+    
+    valueEl.textContent = `${data.achieved}/${data.target}`;
+    
+    // Adjust font size based on text length
+    const textLength = valueEl.textContent.length;
+    if (textLength > 8) {
+      valueEl.style.fontSize = 'clamp(16px, 2vw, 32px)';
+    } else if (textLength > 6) {
+      valueEl.style.fontSize = 'clamp(18px, 2.2vw, 36px)';
+    } else {
+      valueEl.style.fontSize = 'clamp(20px, 2.5vw, 40px)';
+    }
+    
+    let iconClass = 'fa-check';
+    let deltaClass = 'neutral';
+    let deltaText = `${progress}% of target`;
+    
+    if (data.achieved > data.target) {
+      iconClass = 'fa-trophy';
+      deltaClass = 'up';
+    } else if (data.achieved >= (data.target * 0.75)) {
+      iconClass = 'fa-chart-line';
+      deltaClass = 'up';
+    } else if (data.achieved >= (data.target * 0.5)) {
+      iconClass = 'fa-hourglass-half';
+      deltaClass = 'neutral';
+    } else {
+      iconClass = 'fa-exclamation-circle';
+      deltaClass = 'down';
+    }
+    
+    deltaEl.className = `metric-delta ${deltaClass}`;
+    deltaEl.innerHTML = `<i class="fas ${iconClass}"></i> ${deltaText}`;
+    
+    valueEl.style.transform = 'scale(1.1)';
+    setTimeout(() => {
+      valueEl.style.transform = 'scale(1)';
+    }, 200);
+  }
+
+  function makeEditable() {
+    const valueElements = document.querySelectorAll('.metric-value');
+    valueElements.forEach(el => {
+      el.contentEditable = true;
+      el.style.cursor = 'text';
+      
+      el.addEventListener('blur', function() {
+        const metricEl = this.closest('[data-metric]');
+        const id = metricEl.dataset.metric;
+        const text = this.textContent;
+        const parts = text.split('/');
+        let newAchieved = parseFloat(parts[0].trim());
+        let newTarget = salesData[id].target;
+        
+        if (parts.length > 1) {
+          const targetPart = parseFloat(parts[1].trim());
+          if (!isNaN(targetPart) && targetPart > 0) {
+            newTarget = targetPart;
+          }
+        }
+        
+        if (isNaN(newAchieved) || newAchieved < 0) {
+          newAchieved = salesData[id].achieved;
+        }
+        
+        salesData[id].achieved = newAchieved;
+        salesData[id].target = newTarget;
+        
+        if (id === 'alpha' || id === 'rebel') {
+          salesData.total.achieved = salesData.alpha.achieved + salesData.rebel.achieved;
+          salesData.total.target = salesData.alpha.target + salesData.rebel.target;
+          updateMetric('total');
+        }
+        
+        this.textContent = `${salesData[id].achieved}/${salesData[id].target}`;
+        updateMetric(id);
+      });
+      
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.blur();
+        }
+      });
+    });
+  }
+
+  /* ── Clock ─────────────────────────── */
+  function tick() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('date').textContent =
+      now.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  tick(); setInterval(tick, 1000);
+
+  /*
+  <! ── Slides ───────────────────────────
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsEl = document.getElementById('dots');
+  const DURATION = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--slide-duration')) * 1000;
+
+  /* Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot-i' + (i === 0 ? ' on' : '');
+    dotsEl.appendChild(d);
+  });
+  const dotEls = Array.from(dotsEl.querySelectorAll('.dot-i'));
+
+  let cur = 0;
+
+  function goTo(next) {
+    slides[cur].classList.remove('active');
+    slides[cur].classList.add('exit');
+    dotEls[cur].classList.remove('on');
+    setTimeout(() => slides[cur].classList.remove('exit'), 600);
+    cur = next;
+    slides[cur].classList.add('active');
+    dotEls[cur].classList.add('on');
+    /* restart progress bar
+    const bar = document.getElementById('progress');
+    bar.style.animation = 'none';
+    bar.offsetWidth; /* reflow
+    bar.style.animation = '';
+  }
+
+  setInterval(() => goTo((cur + 1) % slides.length), DURATION);
+  */
+
+  /* Initialize sales metrics */
+  document.addEventListener('DOMContentLoaded', function() {
+    updateMetric('alpha');
+    updateMetric('rebel');
+    updateMetric('total');
+    makeEditable();
+  });
+</script>
+
+</body>
+</html>
