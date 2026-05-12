@@ -594,11 +594,24 @@
 
 <script>
   /* ── Sales Data ─────────────────────────── */
-  const salesData = {
+  let salesData = {
     alpha: { achieved: 0, target: 10, name: 'Team Alpha' },
     rebel: { achieved: 0, target: 10, name: 'Team Rebel' },
     total: { achieved: 0, target: 20, name: 'Branch Total' }
   };
+
+  async function fetchMetrics() {
+    try {
+      const response = await fetch('/api/metrics');
+      const data = await response.json();
+      salesData = data;
+      updateMetric('alpha');
+      updateMetric('rebel');
+      updateMetric('total');
+    } catch (error) {
+      console.error('Error fetching metrics:', error);
+    }
+  }
 
   function calculateProgress(achieved, target) {
     if (target === 0) return 0;
@@ -657,53 +670,6 @@
     }, 200);
   }
 
-  function makeEditable() {
-    const valueElements = document.querySelectorAll('.metric-value');
-    valueElements.forEach(el => {
-      el.contentEditable = true;
-      el.style.cursor = 'text';
-      
-      el.addEventListener('blur', function() {
-        const metricEl = this.closest('[data-metric]');
-        const id = metricEl.dataset.metric;
-        const text = this.textContent;
-        const parts = text.split('/');
-        let newAchieved = parseFloat(parts[0].trim());
-        let newTarget = salesData[id].target;
-        
-        if (parts.length > 1) {
-          const targetPart = parseFloat(parts[1].trim());
-          if (!isNaN(targetPart) && targetPart > 0) {
-            newTarget = targetPart;
-          }
-        }
-        
-        if (isNaN(newAchieved) || newAchieved < 0) {
-          newAchieved = salesData[id].achieved;
-        }
-        
-        salesData[id].achieved = newAchieved;
-        salesData[id].target = newTarget;
-        
-        if (id === 'alpha' || id === 'rebel') {
-          salesData.total.achieved = salesData.alpha.achieved + salesData.rebel.achieved;
-          salesData.total.target = salesData.alpha.target + salesData.rebel.target;
-          updateMetric('total');
-        }
-        
-        this.textContent = `${salesData[id].achieved}/${salesData[id].target}`;
-        updateMetric(id);
-      });
-      
-      el.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          this.blur();
-        }
-      });
-    });
-  }
-
   /* ── Clock ─────────────────────────── */
   function tick() {
     const now = new Date();
@@ -716,10 +682,9 @@
 
   /* Initialize sales metrics */
   document.addEventListener('DOMContentLoaded', function() {
-    updateMetric('alpha');
-    updateMetric('rebel');
-    updateMetric('total');
-    makeEditable();
+    fetchMetrics();
+    // Poll for updates every second
+    setInterval(fetchMetrics, 1000);
   });
 </script>
 

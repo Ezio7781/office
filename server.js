@@ -4,6 +4,12 @@ const path = require('path');
 
 const PORT = 8000;
 
+let salesData = {
+  alpha: { achieved: 0, target: 10, name: 'Team Alpha' },
+  rebel: { achieved: 0, target: 10, name: 'Team Rebel' },
+  total: { achieved: 0, target: 20, name: 'Branch Total' }
+};
+
 const mimeTypes = {
   '.html': 'text/html',
   '.js': 'text/javascript',
@@ -18,6 +24,37 @@ const mimeTypes = {
 
 const server = http.createServer((req, res) => {
   console.log(`${req.method} ${req.url}`);
+
+  if (req.method === 'GET' && req.url === '/api/metrics') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(salesData), 'utf-8');
+    return;
+  }
+
+  if (req.method === 'POST' && req.url === '/api/metrics') {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    req.on('end', () => {
+      try {
+        const newData = JSON.parse(body);
+        salesData.alpha = newData.alpha || salesData.alpha;
+        salesData.rebel = newData.rebel || salesData.rebel;
+        salesData.total = newData.total || {
+          achieved: salesData.alpha.achieved + salesData.rebel.achieved,
+          target: salesData.alpha.target + salesData.rebel.target,
+          name: 'Branch Total'
+        };
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(salesData), 'utf-8');
+      } catch (error) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Invalid JSON' }), 'utf-8');
+      }
+    });
+    return;
+  }
 
   let filePath = '.' + req.url;
   if (filePath === './') {
