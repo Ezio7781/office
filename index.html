@@ -810,7 +810,7 @@
   <div class="slides-area">
 
     <!-- SLIDE 1: Company / Branding -->
-    <div class="slide s-company">
+    <div class="slide s-company active">
       <div class="slide-title">Welcome to</div>  
       <img src="logo.png" alt="Skyrise Education" class="big-logo">
       <div class="slide-tag"></div>
@@ -818,7 +818,7 @@
     </div>
 
     <!-- SLIDE 2: Competition - 4 Quadrants -->
-    <div class="slide s-competition active">
+    <div class="slide s-competition">
       <div class="slide-title">🏆 Team Competition</div>
       
       <div class="competition-container" style="grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2vw; padding: 2vh 0;">
@@ -1144,24 +1144,24 @@
   tick(); setInterval(tick, 1000);
 
   /* ── Slide Rotation ─────────────────────────── */
-  // let currentSlideIndex = 0;
-  // const slides = document.querySelectorAll('.slide');
-  // 
-  // function rotateSlides() {
-  //   const currentSlide = slides[currentSlideIndex];
-  //   currentSlideIndex = (currentSlideIndex + 1) % slides.length;
-  //   const nextSlide = slides[currentSlideIndex];
-  //   
-  //   currentSlide.classList.remove('active');
-  //   currentSlide.classList.add('exit');
-  //   
-  //   setTimeout(() => {
-  //     currentSlide.classList.remove('exit');
-  //     nextSlide.classList.add('active');
-  //   }, 500);
-  // }
-  // 
-  // setInterval(rotateSlides, 10000);
+  let currentSlideIndex = 0;
+  const slides = document.querySelectorAll('.slide');
+  
+  function rotateSlides() {
+    const currentSlide = slides[currentSlideIndex];
+    currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+    const nextSlide = slides[currentSlideIndex];
+    
+    currentSlide.classList.remove('active');
+    currentSlide.classList.add('exit');
+    
+    setTimeout(() => {
+      currentSlide.classList.remove('exit');
+      nextSlide.classList.add('active');
+    }, 500);
+  }
+  
+  setInterval(rotateSlides, 30000);
 
   /* Initialize everything */
   document.addEventListener('DOMContentLoaded', function() {
