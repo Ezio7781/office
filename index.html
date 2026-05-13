@@ -810,106 +810,135 @@
   <div class="slides-area">
 
     <!-- SLIDE 1: Company / Branding -->
-    <div class="slide s-company active">
+    <div class="slide s-company">
       <div class="slide-title">Welcome to</div>  
       <img src="logo.png" alt="Skyrise Education" class="big-logo">
       <div class="slide-tag"></div>
       <div class="slide-sub">Empowering students. Delivering quality education every single day.</div> <!-- ← EDIT -->
     </div>
 
-    <!-- SLIDE 2: Competition -->
-    <div class="slide s-competition">
+    <!-- SLIDE 2: Competition - 4 Quadrants -->
+    <div class="slide s-competition active">
       <div class="slide-title">🏆 Team Competition</div>
       
-      <div class="competition-container">
-        <!-- Team A Section -->
-        <div class="team-section team-a">
-          <div class="team-header">
-            <div class="team-name-title">Team A</div>
-            <div class="team-total-points" id="team-a-total">0</div>
+      <div class="competition-container" style="grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 2vw; padding: 2vh 0;">
+        
+        <!-- Quadrant 1: Team A Junior -->
+        <div class="team-section team-a" style="margin: 0;">
+          <div class="team-header" style="margin-bottom: 1.5vh; padding-bottom: 1vh;">
+            <div class="team-name-title">Team A - Junior</div>
           </div>
-          
-          <div class="members-list">
-            <div class="member-card" data-team="a" data-member="junior">
-              <div class="member-avatar">AJ</div>
-              <div class="member-info">
-                <div class="member-name">Alex Johnson</div>
-                <div class="member-role">Junior</div>
-              </div>
-              <div class="member-points">
-                <div class="member-points-value" contenteditable="true">0</div>
-                <div class="member-points-label">POINTS</div>
-              </div>
-            </div>
-            
-            <div class="member-card" data-team="a" data-member="senior">
-              <div class="member-avatar">AS</div>
-              <div class="member-info">
-                <div class="member-name">Sarah Williams</div>
-                <div class="member-role">Senior</div>
-              </div>
-              <div class="member-points">
-                <div class="member-points-value" contenteditable="true">0</div>
-                <div class="member-points-label">POINTS</div>
-              </div>
-            </div>
-          </div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 2px solid rgba(0,0,102,0.2);">
+                <th style="text-align: left; padding: 10px 0; font-size: clamp(12px, 1.2vw, 18px); color: var(--text);">Name</th>
+                <th style="text-align: right; padding: 10px 0; font-size: clamp(12px, 1.2vw, 18px); color: var(--text);">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(0,0,102,0.1);">
+                <td style="padding: 10px 0; font-size: clamp(11px, 1.1vw, 16px); color: var(--text);">Member 1</td>
+                <td style="padding: 10px 0; text-align: right;">
+                  <span class="member-points-value" contenteditable="true" style="padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border); font-family: var(--mono); font-weight: 600; display: inline-block; min-width: 60px; text-align: center;">0</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; font-size: clamp(11px, 1.1vw, 16px); color: var(--text);">Member 2</td>
+                <td style="padding: 10px 0; text-align: right;">
+                  <span class="member-points-value" contenteditable="true" style="padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border); font-family: var(--mono); font-weight: 600; display: inline-block; min-width: 60px; text-align: center;">0</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <!-- Team B Section -->
-        <div class="team-section team-b">
-          <div class="team-header">
-            <div class="team-name-title">Team B</div>
-            <div class="team-total-points" id="team-b-total">0</div>
+        <!-- Quadrant 2: Team A Senior -->
+        <div class="team-section team-a" style="margin: 0;">
+          <div class="team-header" style="margin-bottom: 1.5vh; padding-bottom: 1vh;">
+            <div class="team-name-title">Team A - Senior</div>
           </div>
-          
-          <div class="members-list">
-            <div class="member-card" data-team="b" data-member="junior">
-              <div class="member-avatar">BJ</div>
-              <div class="member-info">
-                <div class="member-name">Mike Chen</div>
-                <div class="member-role">Junior</div>
-              </div>
-              <div class="member-points">
-                <div class="member-points-value" contenteditable="true">0</div>
-                <div class="member-points-label">POINTS</div>
-              </div>
-            </div>
-            
-            <div class="member-card" data-team="b" data-member="senior">
-              <div class="member-avatar">BS</div>
-              <div class="member-info">
-                <div class="member-name">Emily Davis</div>
-                <div class="member-role">Senior</div>
-              </div>
-              <div class="member-points">
-                <div class="member-points-value" contenteditable="true">0</div>
-                <div class="member-points-label">POINTS</div>
-              </div>
-            </div>
-          </div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 2px solid rgba(0,0,102,0.2);">
+                <th style="text-align: left; padding: 10px 0; font-size: clamp(12px, 1.2vw, 18px); color: var(--text);">Name</th>
+                <th style="text-align: right; padding: 10px 0; font-size: clamp(12px, 1.2vw, 18px); color: var(--text);">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(0,0,102,0.1);">
+                <td style="padding: 10px 0; font-size: clamp(11px, 1.1vw, 16px); color: var(--text);">Member 1</td>
+                <td style="padding: 10px 0; text-align: right;">
+                  <span class="member-points-value" contenteditable="true" style="padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border); font-family: var(--mono); font-weight: 600; display: inline-block; min-width: 60px; text-align: center;">0</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; font-size: clamp(11px, 1.1vw, 16px); color: var(--text);">Member 2</td>
+                <td style="padding: 10px 0; text-align: right;">
+                  <span class="member-points-value" contenteditable="true" style="padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border); font-family: var(--mono); font-weight: 600; display: inline-block; min-width: 60px; text-align: center;">0</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <!-- Competition Metrics -->
-        <div class="competition-metrics">
-          <div class="comp-metric" id="leader-metric">
-            <div class="comp-metric-label">Leader</div>
-            <div class="comp-metric-value">--</div>
-            <div class="comp-metric-sub">Current competition leader</div>
+        <!-- Quadrant 3: Team B Junior -->
+        <div class="team-section team-b" style="margin: 0;">
+          <div class="team-header" style="margin-bottom: 1.5vh; padding-bottom: 1vh;">
+            <div class="team-name-title">Team B - Junior</div>
           </div>
-          
-          <div class="comp-metric">
-            <div class="comp-metric-label">Lead Points</div>
-            <div class="comp-metric-value" id="lead-points">0</div>
-            <div class="comp-metric-sub">Points ahead</div>
-          </div>
-          
-          <div class="comp-metric">
-            <div class="comp-metric-label">Total Points</div>
-            <div class="comp-metric-value" id="total-points">0</div>
-            <div class="comp-metric-sub">Combined points</div>
-          </div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 2px solid rgba(255,0,0,0.2);">
+                <th style="text-align: left; padding: 10px 0; font-size: clamp(12px, 1.2vw, 18px); color: var(--text);">Name</th>
+                <th style="text-align: right; padding: 10px 0; font-size: clamp(12px, 1.2vw, 18px); color: var(--text);">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255,0,0,0.1);">
+                <td style="padding: 10px 0; font-size: clamp(11px, 1.1vw, 16px); color: var(--text);">Member 1</td>
+                <td style="padding: 10px 0; text-align: right;">
+                  <span class="member-points-value" contenteditable="true" style="padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border); font-family: var(--mono); font-weight: 600; display: inline-block; min-width: 60px; text-align: center;">0</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; font-size: clamp(11px, 1.1vw, 16px); color: var(--text);">Member 2</td>
+                <td style="padding: 10px 0; text-align: right;">
+                  <span class="member-points-value" contenteditable="true" style="padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border); font-family: var(--mono); font-weight: 600; display: inline-block; min-width: 60px; text-align: center;">0</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+
+        <!-- Quadrant 4: Team B Senior -->
+        <div class="team-section team-b" style="margin: 0;">
+          <div class="team-header" style="margin-bottom: 1.5vh; padding-bottom: 1vh;">
+            <div class="team-name-title">Team B - Senior</div>
+          </div>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 2px solid rgba(255,0,0,0.2);">
+                <th style="text-align: left; padding: 10px 0; font-size: clamp(12px, 1.2vw, 18px); color: var(--text);">Name</th>
+                <th style="text-align: right; padding: 10px 0; font-size: clamp(12px, 1.2vw, 18px); color: var(--text);">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(255,0,0,0.1);">
+                <td style="padding: 10px 0; font-size: clamp(11px, 1.1vw, 16px); color: var(--text);">Member 1</td>
+                <td style="padding: 10px 0; text-align: right;">
+                  <span class="member-points-value" contenteditable="true" style="padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border); font-family: var(--mono); font-weight: 600; display: inline-block; min-width: 60px; text-align: center;">0</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; font-size: clamp(11px, 1.1vw, 16px); color: var(--text);">Member 2</td>
+                <td style="padding: 10px 0; text-align: right;">
+                  <span class="member-points-value" contenteditable="true" style="padding: 4px 12px; border-radius: 8px; border: 1px solid var(--border); font-family: var(--mono); font-weight: 600; display: inline-block; min-width: 60px; text-align: center;">0</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
 
@@ -1115,24 +1144,24 @@
   tick(); setInterval(tick, 1000);
 
   /* ── Slide Rotation ─────────────────────────── */
-  let currentSlideIndex = 0;
-  const slides = document.querySelectorAll('.slide');
-  
-  function rotateSlides() {
-    const currentSlide = slides[currentSlideIndex];
-    currentSlideIndex = (currentSlideIndex + 1) % slides.length;
-    const nextSlide = slides[currentSlideIndex];
-    
-    currentSlide.classList.remove('active');
-    currentSlide.classList.add('exit');
-    
-    setTimeout(() => {
-      currentSlide.classList.remove('exit');
-      nextSlide.classList.add('active');
-    }, 500);
-  }
-  
-  setInterval(rotateSlides, 10000);
+  // let currentSlideIndex = 0;
+  // const slides = document.querySelectorAll('.slide');
+  // 
+  // function rotateSlides() {
+  //   const currentSlide = slides[currentSlideIndex];
+  //   currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+  //   const nextSlide = slides[currentSlideIndex];
+  //   
+  //   currentSlide.classList.remove('active');
+  //   currentSlide.classList.add('exit');
+  //   
+  //   setTimeout(() => {
+  //     currentSlide.classList.remove('exit');
+  //     nextSlide.classList.add('active');
+  //   }, 500);
+  // }
+  // 
+  // setInterval(rotateSlides, 10000);
 
   /* Initialize everything */
   document.addEventListener('DOMContentLoaded', function() {
