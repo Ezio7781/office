@@ -122,7 +122,6 @@
     min-width: 0;
     flex: 1;
     max-width: 400px;
-    width: 100%;
     position: relative;
     overflow: visible;
     box-shadow: 0 4px 20px rgba(0,0,102,0.08);
@@ -131,6 +130,16 @@
   .metric:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(0,0,102,0.12);
+  }
+  .metric::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--red));
+    opacity: 0.8;
   }
   .metric-content {
     display: flex;
@@ -211,7 +220,7 @@
     letter-spacing: -0.02em;
   }
   .clock-date {
-    font-size: clamp(10px, 0.9vw, 14px);
+    font-size: clamp(8px, 0.7vw, 11px);
     color: var(--muted);
     margin-top: 2px;
     text-align: right;
@@ -341,6 +350,236 @@
   @keyframes logoPulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.02); }
+  }
+
+  /* Competition Slide */
+  .s-competition {
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .competition-container {
+    width: 90%;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3vw;
+    margin-top: 2vh;
+  }
+
+  .team-section {
+    background: #ffffff;
+    border: 2px solid var(--border);
+    border-radius: 24px;
+    padding: clamp(20px, 3vh, 40px);
+    box-shadow: 0 8px 40px rgba(0,0,102,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .team-section.team-a {
+    border-color: var(--accent);
+    border-top: 6px solid var(--accent);
+  }
+
+  .team-section.team-b {
+    border-color: var(--red);
+    border-top: 6px solid var(--red);
+  }
+
+  .team-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.5vh;
+    padding-bottom: 1.5vh;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .team-name-title {
+    font-size: clamp(20px, 2.5vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .team-a .team-name-title {
+    color: var(--accent);
+  }
+
+  .team-b .team-name-title {
+    color: var(--red);
+  }
+
+  .team-total-points {
+    font-family: var(--mono);
+    font-size: clamp(28px, 3.5vw, 64px);
+    font-weight: 700;
+    padding: clamp(8px, 1.2vh, 16px) clamp(16px, 2vw, 32px);
+    border-radius: 16px;
+  }
+
+  .team-a .team-total-points {
+    background: linear-gradient(135deg, rgba(0,0,102,0.1), rgba(0,0,102,0.05));
+    color: var(--accent);
+  }
+
+  .team-b .team-total-points {
+    background: linear-gradient(135deg, rgba(255,0,0,0.1), rgba(255,0,0,0.05));
+    color: var(--red);
+  }
+
+  .members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8vh;
+  }
+
+  .member-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5vw;
+    padding: clamp(12px, 1.6vh, 24px);
+    background: linear-gradient(135deg, rgba(0,0,102,0.03), rgba(255,255,255,1));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .member-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(0,0,102,0.1);
+  }
+
+  .member-avatar {
+    width: clamp(48px, 5vw, 72px);
+    height: clamp(48px, 5vw, 72px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(18px, 2vw, 28px);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .team-a .member-avatar {
+    background: linear-gradient(135deg, rgba(0,0,102,0.15), rgba(0,0,102,0.08));
+    color: var(--accent);
+    border: 2px solid rgba(0,0,102,0.2);
+  }
+
+  .team-b .member-avatar {
+    background: linear-gradient(135deg, rgba(255,0,0,0.15), rgba(255,0,0,0.08));
+    color: var(--red);
+    border: 2px solid rgba(255,0,0,0.2);
+  }
+
+  .member-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .member-name {
+    font-size: clamp(14px, 1.5vw, 22px);
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .member-role {
+    font-size: clamp(10px, 0.9vw, 14px);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .member-points {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .member-points-value {
+    font-family: var(--mono);
+    font-size: clamp(20px, 2.2vw, 36px);
+    font-weight: 700;
+    padding: clamp(6px, 0.8vh, 12px) clamp(12px, 1.5vw, 24px);
+    border-radius: 12px;
+    background: #ffffff;
+    border: 2px solid var(--border);
+    cursor: text;
+    min-width: 80px;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  .member-points-value:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(0,0,102,0.15);
+  }
+
+  .member-points-value:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(0,0,102,0.1);
+  }
+
+  .member-points-label {
+    font-size: clamp(8px, 0.7vw, 11px);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .competition-metrics {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 2vw;
+    justify-content: center;
+    margin-top: 3vh;
+  }
+
+  .comp-metric {
+    background: #ffffff;
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: clamp(16px, 2vh, 32px) clamp(24px, 2.8vw, 48px);
+    text-align: center;
+    min-width: clamp(140px, 15vw, 240px);
+    box-shadow: 0 6px 24px rgba(0,0,102,0.06);
+  }
+
+  .comp-metric.leader {
+    border-color: #FFD700;
+    border-top: 4px solid #FFD700;
+    background: linear-gradient(135deg, rgba(255,215,0,0.08), #ffffff);
+  }
+
+  .comp-metric-label {
+    font-size: clamp(10px, 0.9vw, 14px);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .comp-metric-value {
+    font-family: var(--mono);
+    font-size: clamp(24px, 2.8vw, 48px);
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .comp-metric.leader .comp-metric-value {
+    color: #B8860B;
+  }
+
+  .comp-metric-sub {
+    font-size: clamp(10px, 0.85vw, 14px);
+    color: var(--muted);
+    margin-top: 6px;
   }
 
   /* Team slide */
@@ -521,7 +760,7 @@
           </div>
           <div class="metric-text">
             <div class="metric-label">Team Alpha Sales</div>
-            <div class="metric-value" id="alpha-num">0</div>
+            <div class="metric-value">0</div>
             <div class="metric-delta"></div>
           </div>
         </div>
@@ -535,7 +774,7 @@
           </div>
           <div class="metric-text">
             <div class="metric-label">Team Rebel Sales</div>
-            <div class="metric-value" id="rebel-num">0</div>
+            <div class="metric-value">0</div>
             <div class="metric-delta"></div>
           </div>
         </div>
@@ -549,7 +788,7 @@
           </div>
           <div class="metric-text">
             <div class="metric-label">Branch Total Sales</div>
-            <div class="metric-value" id="branch-total">0</div>
+            <div class="metric-value">0</div>
             <div class="metric-delta"></div>
           </div>
         </div>
@@ -578,21 +817,127 @@
       <div class="slide-sub">Empowering students. Delivering quality education every single day.</div> <!-- ← EDIT -->
     </div>
 
+    <!-- SLIDE 2: Competition -->
+    <div class="slide s-competition">
+      <div class="slide-title">🏆 Team Competition</div>
+      
+      <div class="competition-container">
+        <!-- Team A Section -->
+        <div class="team-section team-a">
+          <div class="team-header">
+            <div class="team-name-title">Team A</div>
+            <div class="team-total-points" id="team-a-total">0</div>
+          </div>
+          
+          <div class="members-list">
+            <div class="member-card" data-team="a" data-member="junior">
+              <div class="member-avatar">AJ</div>
+              <div class="member-info">
+                <div class="member-name">Alex Johnson</div>
+                <div class="member-role">Junior</div>
+              </div>
+              <div class="member-points">
+                <div class="member-points-value" contenteditable="true">0</div>
+                <div class="member-points-label">POINTS</div>
+              </div>
+            </div>
+            
+            <div class="member-card" data-team="a" data-member="senior">
+              <div class="member-avatar">AS</div>
+              <div class="member-info">
+                <div class="member-name">Sarah Williams</div>
+                <div class="member-role">Senior</div>
+              </div>
+              <div class="member-points">
+                <div class="member-points-value" contenteditable="true">0</div>
+                <div class="member-points-label">POINTS</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Team B Section -->
+        <div class="team-section team-b">
+          <div class="team-header">
+            <div class="team-name-title">Team B</div>
+            <div class="team-total-points" id="team-b-total">0</div>
+          </div>
+          
+          <div class="members-list">
+            <div class="member-card" data-team="b" data-member="junior">
+              <div class="member-avatar">BJ</div>
+              <div class="member-info">
+                <div class="member-name">Mike Chen</div>
+                <div class="member-role">Junior</div>
+              </div>
+              <div class="member-points">
+                <div class="member-points-value" contenteditable="true">0</div>
+                <div class="member-points-label">POINTS</div>
+              </div>
+            </div>
+            
+            <div class="member-card" data-team="b" data-member="senior">
+              <div class="member-avatar">BS</div>
+              <div class="member-info">
+                <div class="member-name">Emily Davis</div>
+                <div class="member-role">Senior</div>
+              </div>
+              <div class="member-points">
+                <div class="member-points-value" contenteditable="true">0</div>
+                <div class="member-points-label">POINTS</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Competition Metrics -->
+        <div class="competition-metrics">
+          <div class="comp-metric" id="leader-metric">
+            <div class="comp-metric-label">Leader</div>
+            <div class="comp-metric-value">--</div>
+            <div class="comp-metric-sub">Current competition leader</div>
+          </div>
+          
+          <div class="comp-metric">
+            <div class="comp-metric-label">Lead Points</div>
+            <div class="comp-metric-value" id="lead-points">0</div>
+            <div class="comp-metric-sub">Points ahead</div>
+          </div>
+          
+          <div class="comp-metric">
+            <div class="comp-metric-label">Total Points</div>
+            <div class="comp-metric-value" id="total-points">0</div>
+            <div class="comp-metric-sub">Combined points</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
   <!-- ══ END SLIDES ══════════════════════════════════════════════ -->
 
 </div>
 
 <script>
+  /* ── Sales Data ─────────────────────────── */
+  const salesData = {
+    alpha: { achieved: 0, target: 10, name: 'Team Alpha' },
+    rebel: { achieved: 0, target: 10, name: 'Team Rebel' },
+    total: { achieved: 0, target: 20, name: 'Branch Total' }
+  };
+
   function calculateProgress(achieved, target) {
     if (target === 0) return 0;
     return ((achieved / target) * 100).toFixed(1);
   }
 
-  function updateMetricById(id, data) {
-    const valueEl = document.getElementById(id);
-    if (!valueEl) return;
-
+  function updateMetric(id) {
+    const data = salesData[id];
+    const progress = calculateProgress(data.achieved, data.target);
+    const metricEl = document.querySelector(`[data-metric="${id}"]`);
+    const valueEl = metricEl.querySelector('.metric-value');
+    const deltaEl = metricEl.querySelector('.metric-delta');
+    
     valueEl.textContent = `${data.achieved}/${data.target}`;
     
     // Adjust font size based on text length
@@ -610,12 +955,6 @@
     } else {
       valueEl.style.fontSize = 'clamp(19px, 2.3vw, 38px)';
     }
-
-    const metricEl = valueEl.closest('[data-metric]');
-    if (!metricEl) return;
-
-    const deltaEl = metricEl.querySelector('.metric-delta');
-    const progress = calculateProgress(data.achieved, data.target);
     
     let iconClass = 'fa-check';
     let deltaClass = 'neutral';
@@ -644,18 +983,125 @@
     }, 200);
   }
 
-  async function fetchMetrics() {
-    try {
-      const response = await fetch('/api/metrics');
-      const data = await response.json();
+  function makeEditable() {
+    const valueElements = document.querySelectorAll('.metric-value');
+    valueElements.forEach(el => {
+      el.contentEditable = true;
+      el.style.cursor = 'text';
       
-      // Update using IDs
-      updateMetricById('alpha-num', data.alpha);
-      updateMetricById('rebel-num', data.rebel);
-      updateMetricById('branch-total', data.total);
-    } catch (error) {
-      console.error('Error fetching metrics:', error);
+      el.addEventListener('blur', function() {
+        const metricEl = this.closest('[data-metric]');
+        const id = metricEl.dataset.metric;
+        const text = this.textContent;
+        const parts = text.split('/');
+        let newAchieved = parseFloat(parts[0].trim());
+        let newTarget = salesData[id].target;
+        
+        if (parts.length > 1) {
+          const targetPart = parseFloat(parts[1].trim());
+          if (!isNaN(targetPart) && targetPart > 0) {
+            newTarget = targetPart;
+          }
+        }
+        
+        if (isNaN(newAchieved) || newAchieved < 0) {
+          newAchieved = salesData[id].achieved;
+        }
+        
+        salesData[id].achieved = newAchieved;
+        salesData[id].target = newTarget;
+        
+        if (id === 'alpha' || id === 'rebel') {
+          salesData.total.achieved = salesData.alpha.achieved + salesData.rebel.achieved;
+          salesData.total.target = salesData.alpha.target + salesData.rebel.target;
+          updateMetric('total');
+        }
+        
+        this.textContent = `${salesData[id].achieved}/${salesData[id].target}`;
+        updateMetric(id);
+      });
+      
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.blur();
+        }
+      });
+    });
+  }
+
+  /* ── Competition Data ─────────────────────────── */
+  const competitionData = {
+    a: {
+      junior: 0,
+      senior: 0
+    },
+    b: {
+      junior: 0,
+      senior: 0
     }
+  };
+
+  function updateCompetition() {
+    // Calculate team totals
+    const teamATotal = competitionData.a.junior + competitionData.a.senior;
+    const teamBTotal = competitionData.b.junior + competitionData.b.senior;
+    
+    // Update team totals
+    document.getElementById('team-a-total').textContent = teamATotal;
+    document.getElementById('team-b-total').textContent = teamBTotal;
+    
+    // Calculate metrics
+    const totalPoints = teamATotal + teamBTotal;
+    document.getElementById('total-points').textContent = totalPoints;
+    
+    // Determine leader
+    const leaderMetric = document.getElementById('leader-metric');
+    const leadPointsEl = document.getElementById('lead-points');
+    
+    if (teamATotal > teamBTotal) {
+      leaderMetric.classList.add('leader');
+      leaderMetric.querySelector('.comp-metric-value').textContent = 'Team A';
+      leadPointsEl.textContent = teamATotal - teamBTotal;
+    } else if (teamBTotal > teamATotal) {
+      leaderMetric.classList.add('leader');
+      leaderMetric.querySelector('.comp-metric-value').textContent = 'Team B';
+      leadPointsEl.textContent = teamBTotal - teamATotal;
+    } else {
+      leaderMetric.classList.remove('leader');
+      leaderMetric.querySelector('.comp-metric-value').textContent = 'Tie';
+      leadPointsEl.textContent = 0;
+    }
+  }
+
+  function makeCompetitionEditable() {
+    const pointElements = document.querySelectorAll('.member-points-value');
+    pointElements.forEach(el => {
+      el.contentEditable = true;
+      
+      el.addEventListener('blur', function() {
+        const card = this.closest('[data-team][data-member]');
+        const team = card.dataset.team;
+        const member = card.dataset.member;
+        const text = this.textContent;
+        let newValue = parseInt(text.trim());
+        
+        if (isNaN(newValue) || newValue < 0) {
+          newValue = competitionData[team][member];
+        }
+        
+        competitionData[team][member] = newValue;
+        this.textContent = newValue;
+        updateCompetition();
+      });
+      
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.blur();
+        }
+      });
+    });
   }
 
   /* ── Clock ─────────────────────────── */
@@ -668,11 +1114,34 @@
   }
   tick(); setInterval(tick, 1000);
 
-  /* Initialize sales metrics */
+  /* ── Slide Rotation ─────────────────────────── */
+  let currentSlideIndex = 0;
+  const slides = document.querySelectorAll('.slide');
+  
+  function rotateSlides() {
+    const currentSlide = slides[currentSlideIndex];
+    currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+    const nextSlide = slides[currentSlideIndex];
+    
+    currentSlide.classList.remove('active');
+    currentSlide.classList.add('exit');
+    
+    setTimeout(() => {
+      currentSlide.classList.remove('exit');
+      nextSlide.classList.add('active');
+    }, 500);
+  }
+  
+  setInterval(rotateSlides, 10000);
+
+  /* Initialize everything */
   document.addEventListener('DOMContentLoaded', function() {
-    fetchMetrics();
-    // Poll for updates every 5 seconds
-    setInterval(fetchMetrics, 5000);
+    updateMetric('alpha');
+    updateMetric('rebel');
+    updateMetric('total');
+    makeEditable();
+    updateCompetition();
+    makeCompetitionEditable();
   });
 </script>
 
